@@ -1,0 +1,51 @@
+{
+  "name": "counselor-booking-app",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "description": "Secure counselor booking system with Vue 3 and TypeScript",
+  "scripts": {
+    "dev": "concurrently \"npm run server:dev\" \"npm run client:dev\"",
+    "client:dev": "vite",
+    "server:dev": "node server.js",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview",
+    "server": "node server.js",
+    "type-check": "vue-tsc --build"
+  },
+  "dependencies": {
+    "vue": "^3.5.27",
+    "vue-router": "^4.6.4",
+    "pinia": "^2.3.1",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "helmet": "^8.0.0",
+    "express-rate-limit": "^7.5.0",
+    "better-sqlite3": "^11.8.1",
+    "argon2": "^0.41.1",
+    "sanitize-html": "^2.13.1",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^16.4.7",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.3",
+    "@tsconfig/node24": "^24.0.4",
+    "@types/node": "^24.10.9",
+    "@vue/tsconfig": "^0.8.1",
+    "vite": "^7.3.1",
+    "typescript": "~5.9.3",
+    "vue-tsc": "^3.2.4",
+    "@types/express": "^5.0.0",
+    "@types/express-session": "^1.18.0",
+    "@types/better-sqlite3": "^7.6.12",
+    "@types/sanitize-html": "^2.13.0",
+    "@types/cookie-parser": "^1.4.7",
+    "@types/cors": "^2.8.17",
+    "concurrently": "^9.2.1",
+    "vite-plugin-vue-devtools": "^8.0.5"
+  },
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  }
+}
