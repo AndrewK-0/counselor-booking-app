@@ -91,7 +91,8 @@ app.use((req, res, next) => {
 })
 
 // Force HTTPS redirect in development
-if (isDev) {
+// Force HTTPS in production
+if (!isDev) {
   app.use((req, res, next) => {
     if (!req.secure && req.headers['x-forwarded-proto'] !== 'https') {
       return res.redirect(`https://${req.headers.host}${req.url}`)
