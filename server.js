@@ -27,12 +27,16 @@ const app = express()
 const PORT = process.env.PORT || 3000
 
 // Trust proxy for secure cookies (nginx proxy on EC2)
-app.set('trust proxy', ['127.0.0.1', '::1', 'loopback'])
+// app.set('trust proxy', ['127.0.0.1', '::1', 'loopback'])
 
+// Trust proxy for secure cookies (nginx proxy on EC2)
+app.set('trust proxy', 1) // Trust first proxy
 // CORS configuration
 app.use(
   cors({
-    origin: isDev ? ['https://localhost:3000', 'http://localhost:5173'] : process.env.FRONTEND_URL,
+    origin: isDev
+      ? ['https://localhost:3000', 'http://localhost:5173']
+      : ['https://guidedcare.assortednetwork.com', 'https://www.guidedcare.assortednetwork.com'],
     credentials: true,
   }),
 )
@@ -107,22 +111,19 @@ const cspDirectives = {
   scriptSrc: ["'self'"],
   styleSrc: ["'self'", "'unsafe-inline'"], // Vue may need inline styles
   imgSrc: ["'self'", 'data:', 'https:'],
-  connectSrc: ["'self'"],
   fontSrc: ["'self'"],
+  connectSrc: ["'self'"],
   objectSrc: ["'none'"],
   mediaSrc: ["'self'"],
   frameSrc: ["'none'"],
+  frameAncestors: ["'none'"],
+  baseUri: ["'self'"],
+  formAction: ["'self'"],
+  upgradeInsecureRequests: !isDev ? [] : null,
 }
 
-// Force HTTPS in production
-if (!isDev) {
-  app.use((req, res, next) => {
-    if (!req.secure && req.headers['x-forwarded-proto'] !== 'https') {
-      return res.redirect(`https://${req.headers.host}${req.url}`)
-    }
-    next()
-  })
-}
+// Remove the duplicate HTTPS redirect block here (lines 86-94 in your file)
+// Keep only one HTTPS redirect block
 
 // Helmet security headers
 app.use(
@@ -131,16 +132,33 @@ app.use(
       directives: cspDirectives,
     },
     crossOriginEmbedderPolicy: false,
+    crossOriginOpenerPolicy: { policy: 'same-origin' },
+    crossOriginResourcePolicy: { policy: 'same-origin' },
+    dnsPrefetchControl: { allow: false },
+    frameguard: { action: 'deny' },
+    hidePoweredBy: true,
+    hsts: {
+      maxAge: 63072000,
+      includeSubDomains: true,
+      preload: true,
+    },
+    ieNoOpen: true,
+    noSniff: true,
+    originAgentCluster: true,
+    permittedCrossDomainPolicies: { permittedPolicies: 'none' },
+    referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
+    xssFilter: true,
   }),
 )
 
-app.use(
-  helmet.hsts({
-    maxAge: 63072000,
-    includeSubDomains: true,
-    preload: true,
-  }),
-)
+// Additional security headers not covered by Helmet
+app.use((req, res, next) => {
+  res.setHeader(
+    'Permissions-Policy',
+    'geolocation=(), microphone=(), camera=(), payment=(), usb=(), magnetometer=(), gyroscope=(), speaker=(self)',
+  )
+  next()
+})
 
 // Global rate limiting
 const limiter = rateLimit({
