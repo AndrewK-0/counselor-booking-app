@@ -93,6 +93,9 @@
                     >
                       ← Previous
                     </button>
+                    <div class="month-display">
+                      {{ currentMonthDisplay }}
+                    </div>
                     <button @click="nextWeek" class="btn btn-secondary week-nav-btn">Next →</button>
                   </div>
                   <div class="date-grid">
@@ -249,6 +252,23 @@ const reauthError = ref('')
 const reauthLoading = ref(false)
 
 const isCurrentWeek = computed(() => currentWeekOffset.value === 0)
+
+const currentMonthDisplay = computed(() => {
+  if (weekDays.value.length === 0) return ''
+
+  const firstDay = new Date(weekDays.value[0].date)
+  const lastDay = new Date(weekDays.value[weekDays.value.length - 1].date)
+
+  const firstMonth = firstDay.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+  const lastMonth = lastDay.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+
+  // If week spans two months, show both
+  if (firstMonth !== lastMonth) {
+    return `${firstDay.toLocaleDateString('en-US', { month: 'short' })} - ${lastMonth}`
+  }
+
+  return firstMonth
+})
 
 const weekDays = computed<DaySlot[]>(() => {
   const days: DaySlot[] = []
@@ -968,5 +988,29 @@ onMounted(() => {
   .counselors-sidebar {
     height: 300px;
   }
+}
+
+.month-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--text-primary);
+  min-width: 200px;
+  text-align: center;
+}
+
+.week-navigation {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+  align-items: center;
+}
+
+.week-nav-btn {
+  flex: 0 0 auto;
+  padding: 0.5rem 1rem;
+  min-width: 120px;
 }
 </style>
