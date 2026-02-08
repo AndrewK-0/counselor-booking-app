@@ -592,12 +592,14 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
 }
 
 .header-title {
   display: flex;
   align-items: center;
   gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .dashboard-header h1 {
@@ -617,12 +619,14 @@ onMounted(() => {
   text-transform: uppercase;
   letter-spacing: 0.5px;
   color: var(--primary-color);
+  white-space: nowrap;
 }
 
 .header-actions {
   display: flex;
   align-items: center;
   gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .user-info {
@@ -833,11 +837,13 @@ onMounted(() => {
   display: flex;
   gap: 1rem;
   margin-bottom: 0.75rem;
+  align-items: center;
 }
 
 .week-nav-btn {
-  flex: 1;
+  flex: 0 0 auto;
   padding: 0.5rem 1rem;
+  min-width: 120px;
 }
 
 .date-grid {
@@ -979,17 +985,6 @@ onMounted(() => {
   flex: 1;
 }
 
-@media (max-width: 1024px) {
-  .booking-interface {
-    grid-template-columns: 1fr;
-    height: auto;
-  }
-
-  .counselors-sidebar {
-    height: 300px;
-  }
-}
-
 .month-display {
   display: flex;
   align-items: center;
@@ -1001,16 +996,144 @@ onMounted(() => {
   text-align: center;
 }
 
-.week-navigation {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 0.75rem;
-  align-items: center;
+/* Tablet and smaller devices */
+@media (max-width: 1024px) {
+  .booking-interface {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+
+  .counselors-sidebar {
+    height: 300px;
+  }
 }
 
-.week-nav-btn {
-  flex: 0 0 auto;
-  padding: 0.5rem 1rem;
-  min-width: 120px;
+/* Mobile devices */
+@media (max-width: 768px) {
+  .header-content {
+    padding: 1rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .header-title {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .dashboard-header h1 {
+    font-size: 1.25rem;
+  }
+
+  .header-actions {
+    gap: 0.5rem;
+    justify-content: space-between;
+  }
+
+  .user-info {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .header-actions .btn {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+  }
+
+  .dashboard-content {
+    padding: 1rem;
+  }
+
+  .week-navigation {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .week-nav-btn {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .month-display {
+    min-width: unset;
+    width: 100%;
+    padding: 0.5rem;
+  }
+
+  .date-grid {
+    gap: 0.25rem;
+  }
+
+  .date-button {
+    padding: 0.375rem 0.125rem;
+  }
+
+  .day-name {
+    font-size: 0.625rem;
+  }
+
+  .date-num {
+    font-size: 1rem;
+  }
+
+  .time-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+  .header-content {
+    padding: 0.75rem;
+  }
+
+  .dashboard-header h1 {
+    font-size: 1.125rem;
+  }
+
+  .poc-badge-small {
+    font-size: 0.625rem;
+    padding: 0.2rem 0.4rem;
+  }
+
+  .header-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .user-info {
+    text-align: center;
+    padding: 0.25rem 0;
+  }
+
+  .header-actions .btn {
+    width: 100%;
+  }
+
+  .dashboard-content {
+    padding: 0.75rem;
+  }
+
+  .counselors-sidebar,
+  .booking-panel {
+    padding: 1rem;
+  }
+
+  .counselor-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .counselor-avatar-large {
+    width: 80px;
+    height: 80px;
+    font-size: 2rem;
+  }
 }
 </style>
