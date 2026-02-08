@@ -693,18 +693,23 @@ console.log('🚀 Initializing server...')
 console.log(`Environment: ${isDev ? 'development' : 'production'}`)
 
 // Start server
+// Start server
 if (isDev) {
   // Development: HTTPS with self-signed certificate
-  try {
+  const keyPath = './localhost-key.pem'
+  const certPath = './localhost.pem'
+
+  // Check if SSL files exist before trying to read them
+  if (fs.existsSync(keyPath) && fs.existsSync(certPath)) {
     const sslOptions = {
-      key: fs.readFileSync('./localhost-key.pem'),
-      cert: fs.readFileSync('./localhost.pem'),
+      key: fs.readFileSync(keyPath),
+      cert: fs.readFileSync(certPath),
     }
 
     https.createServer(sslOptions, app).listen(PORT, () => {
       console.log(`✓ HTTPS dev server running at https://localhost:${PORT}`)
     })
-  } catch (err) {
+  } else {
     console.warn('⚠️  SSL certificates not found, falling back to HTTP')
     console.warn('   Run: npm install -g mkcert && mkcert localhost')
     http.createServer(app).listen(PORT, () => {
