@@ -66,7 +66,7 @@ app.use(
       httpOnly: true,
       secure: !isDev,
       sameSite: 'strict',
-      maxAge: 1000 * 60 * 30, // 30 minutes
+      maxAge: 1000 * 60 * 5, // 5 minutes
     },
   }),
 )
